@@ -43,10 +43,10 @@ class BeepThread(Thread):
                     break
                 playerLocal.stop()
                 playerLocal.feed(buf.raw)
-                time.sleep(1)
+                time.sleep(60)
     def generateBeepBuf(self):
         hz = 10
-        length = 1000
+        length = 60000
         left = right = 0
         bufSize=generateBeep(None,hz,length,left,right)
         buf=create_string_buffer(bufSize)
