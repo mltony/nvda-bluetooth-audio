@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""Bluetooth Audio is  an NVDA add-on that improves sound quality when working with bluetooth headphones or speakers."""),
 	# version
-	"addon_version" : "0.2dev",
+	"addon_version" : "1.0",
 	# Author(s)
 	"addon_author" : u"Tony Malykh <anton.malykh@gmail.com>",
 	# URL for the add-on documentation support
