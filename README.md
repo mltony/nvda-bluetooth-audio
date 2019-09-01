@@ -13,5 +13,3 @@ Bluetooth Audio add-on doesn't have any keystrokes. It works as long as it is in
 ## Source code
 Source code is available at <http://github.com/mltony/nvda-bluetooth-audio>.
 
-## Feedback
-If you have any questions or comments, or if you find this addon useful, please don't hesitate to contact me at anton.malykh *at* gmail.com.
