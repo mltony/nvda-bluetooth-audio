@@ -1,17 +1,18 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the bluetoothaudio package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Brazilian Portuguese translation of BluetoothAudio.
+# Copyright (C) 2020 NVDA Contributors.
+# This file is distributed under the same license as the NVDA package.
+# Cleverson Casarin Uliana <clever97@gmail.com>, 2020.
+# Tiago Melo Casal <tcasal@intervox.nce.ufrj.br>, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: bluetoothaudio 1.0\n"
-"Report-Msgid-Bugs-To: nvda-translations@freelists.org\n"
+"Project-Id-Version: BluetoothAudio\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2020-01-03 02:05+1000\n"
-"PO-Revision-Date: 2020-02-21 21:14-0300\n"
-"Last-Translator: Cleverson Casarin Uliana <clever97@gmail.com>\n"
-"Language-Team: Equipe de tradutores do NVDA para Português Brasileiro "
-"<clever97@gmail.com>\n"
+"PO-Revision-Date: 2020-03-09 21:26-0300\n"
+"Last-Translator: Tiago Melo Casal <tcasal@intervox.nce.ufrj.br>\n"
+"Language-Team: NVDA Brazilian Portuguese translation team (Equipe de "
+"tradução do NVDA para Português Brasileiro) <clever97@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on to be shown on installation and add-on information.
 msgid "BluetoothAudio"
-msgstr "áudio bluetooth"
+msgstr "Áudio Bluetooth"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
@@ -29,5 +30,5 @@ msgid ""
 "Bluetooth Audio is  an NVDA add-on that improves sound quality when working "
 "with bluetooth headphones or speakers."
 msgstr ""
-"o Áudio Bluetooth é um complemento para NVDA que melhora a qualidade do som "
+"O Áudio Bluetooth é um complemento para NVDA que melhora a qualidade do som "
 "ao trabalhar com fones de ouvido ou alto-falantes bluetooth."
