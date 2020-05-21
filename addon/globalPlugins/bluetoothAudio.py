@@ -55,7 +55,7 @@ class BeepThread(Thread):
 
     def generateBeepBuf(self):
         hz = 400
-        length = 1000
+        length = 60000
         left = right = 0
         bufSize=generateBeep(None,hz,length,left,right)
         buf=create_string_buffer(bufSize)
