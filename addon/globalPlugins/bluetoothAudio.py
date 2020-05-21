@@ -50,8 +50,7 @@ class BeepThread(Thread):
                 counterLocal = counter
             if counterLocal <= counterThreshold:
                 playerLocal.feed(buf.raw)
-            else:
-                time.sleep(1)
+                time.sleep(60)
 
     def generateBeepBuf(self):
         hz = 400
