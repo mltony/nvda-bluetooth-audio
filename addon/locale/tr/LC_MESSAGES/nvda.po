@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bluetoothaudio 1.0\n"
-"Report-Msgid-Bugs-To: nvda-translations@freelists.org\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2020-01-03 02:05+1000\n"
 "PO-Revision-Date: 2021-01-12 14:42+0300\n"
 "Language: tr\n"
