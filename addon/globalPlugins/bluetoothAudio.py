@@ -19,6 +19,7 @@ import time
 import tones
 import ui
 import wx
+from gui.settingsDialogs import SettingsPanel
 
 SAMPLE_RATE = 44100
 try:
@@ -29,13 +30,14 @@ except:
 counter = 0
 counterThreshold = 5
 lock = Lock()
+
 def resetCounter():
     global counter, lock
     with lock:
         counter = 0
 
-
 class BeepThread(Thread):
+
     def run(self):
         global player, counter, lock
         buf = self.generateBeepBuf()
@@ -53,14 +55,13 @@ class BeepThread(Thread):
 
     def generateBeepBuf(self):
         hz = 400
-        length = 1000
+        length = 60000
         left = right = 0
         bufSize=generateBeep(None,hz,length,left,right)
         buf=create_string_buffer(bufSize)
         generateBeep(buf,hz,length,left,right)
         return buf
 
-        
 beepThread = BeepThread()
 beepThread.setName("Bluetooth Audio background beeper thread")
 beepThread.daemon = True
@@ -78,11 +79,6 @@ def interceptSpeech():
             targetFunc(*args, **kwargs)
         return wrapperFunc
     speech.speak = makeInterceptFunc(speech.speak)
-def createMenu():
-    def _popupMenu(evt):
-        gui.mainFrame._popupSettingsDialog(SettingsDialog)
-    prefsMenuItem  = gui.mainFrame.sysTrayIcon.preferencesMenu.Append(wx.ID_ANY, _("BluetoothAudio..."))
-    gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, _popupMenu, prefsMenuItem)
 
 def initConfiguration():
     confspec = {
@@ -96,16 +92,13 @@ def getConfig(key):
 
 addonHandler.initTranslation()
 initConfiguration()
-createMenu()
 interceptSpeech()
 counterThreshold = getConfig("keepAlive")
 
-class SettingsDialog(gui.SettingsDialog):
-    # Translators: Title for the settings dialog
-    title = _("BluetoothAudio settings")
+class SettingsDialog(SettingsPanel):
 
-    def __init__(self, *args, **kwargs):
-        super(SettingsDialog, self).__init__(*args, **kwargs)
+    # Translators: Title for the settings dialog
+    title = _("BluetoothAudio")
 
     def makeSettings(self, settingsSizer):
         sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
@@ -113,20 +106,32 @@ class SettingsDialog(gui.SettingsDialog):
         self.keepAliveEdit = gui.guiHelper.LabeledControlHelper(self, _("Stand by time in seconds"), wx.TextCtrl).control
         self.keepAliveEdit.Value = str(getConfig("keepAlive"))
 
-    def onOk(self, evt):
-        global counterThreshold
+    def isValid(self):
         try:
-            keepAlive = int(self.keepAliveEdit.Value)
-            config.conf["bluetoothaudio"]["keepAlive"] = keepAlive
-            counterThreshold = keepAlive
-            super(SettingsDialog, self).onOk(evt)
-        except ValueError:
+            int(self.keepAliveEdit.Value)
+            return True
+        except:
             ui.message("Invalid number format")
             self.keepAliveEdit.SetFocus()
+            return False
+
+    def onSave(self):
+        global counterThreshold
+        keepAlive = int(self.keepAliveEdit.Value)
+        config.conf["bluetoothaudio"]["keepAlive"] = keepAlive
+        counterThreshold = keepAlive
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+
     scriptCategory = _("BluetoothAudio")
     
+    def __init__(self, *args, **kwargs):
+        super(GlobalPlugin, self).__init__(*args, **kwargs)
+        self.createMenu()
+
+    def createMenu(self):
+        gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(SettingsDialog)
+
     def terminate(self):
+        gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(SettingsDialog)
         cleanup()
-    
