@@ -103,7 +103,7 @@ class SettingsDialog(SettingsPanel):
     def makeSettings(self, settingsSizer):
         sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
         # Translators: Label for Stand by time edit box
-        self.keepAliveEdit = gui.guiHelper.LabeledControlHelper(self, _("Stand by time in seconds"), wx.TextCtrl).control
+        self.keepAliveEdit = sHelper.addLabeledControl(_("Stand by time in seconds"), wx.TextCtrl)
         self.keepAliveEdit.Value = str(getConfig("keepAlive"))
 
     def isValid(self):
