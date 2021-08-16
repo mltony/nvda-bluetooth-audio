@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: bluetoothaudio 1.0\n"
+"Project-Id-Version: bluetoothaudio 1.3\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2018-11-23 02:05+1000\n"
 "PO-Revision-Date: 2020-08-22 07:57+0800\n"
@@ -23,6 +23,10 @@ msgstr ""
 #. Translators: Summary for this add-on to be shown on installation and add-on information.
 msgid "BluetoothAudio"
 msgstr "BluetoothAudio"
+
+#: bluetoothAudio.py:106
+msgid "Stand by time in seconds"
+msgstr "Время ожидания в секундах"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
