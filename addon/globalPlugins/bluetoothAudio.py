@@ -43,6 +43,21 @@ else:
         pass
 
 
+def initConfiguration():
+    confspec = {
+        "keepAlive" : "integer( default=60, min=0)",
+        "whiteNoiseVolume" : "integer( default=0, min=0, max=100)",
+    }
+    config.conf.spec["bluetoothaudio"] = confspec
+
+addonHandler.initTranslation()
+initConfiguration()
+
+def getConfig(key):
+    value = config.conf["bluetoothaudio"][key]
+    return value
+
+
 
 def resetCounter(reopen=False):
     global beepThread
@@ -72,7 +87,7 @@ def generateBeepBuf(whiteNoiseVolume):
     unpacked = struct.unpack(f"<{n}h", buf)
     unpacked = list(unpacked)
     for i in range(n):
-        unpacked[i] = int(unpacked[i] * whiteNoiseVolume/100)
+        unpacked[i] = int(unpacked[i] * whiteNoiseVolume/1000)
 
     api.q = unpacked
     packed = struct.pack(f"<{n}h", *unpacked)
@@ -105,7 +120,7 @@ class BeepThread(Thread):
                 self.player.stop()
             except:
                 pass
-        self.buf, framerate = generateBeepBuf(1)
+        self.buf, framerate = generateBeepBuf(getConfig('whiteNoiseVolume'))
         self.player = nvwave.WavePlayer(channels=2, samplesPerSec=framerate, bitsPerSample=16, outputDevice=config.conf["speech"]["outputDevice"],wantDucking=False)
 
     def run(self):
@@ -174,19 +189,6 @@ def interceptSpeech():
     speech.speech.speak = makeInterceptFunc(speech.speech.speak, resetCounter)
     tones.initialize = makeInterceptFunc(tones.initialize, lambda: resetCounter(reopen=True))
 
-def initConfiguration():
-    confspec = {
-        "keepAlive" : "integer( default=60, min=0)",
-        "whiteNoiseVolume" : "integer( default=0, min=0, max=100)",
-    }
-    config.conf.spec["bluetoothaudio"] = confspec
-
-def getConfig(key):
-    value = config.conf["bluetoothaudio"][key]
-    return value
-
-addonHandler.initTranslation()
-initConfiguration()
 interceptSpeech()
 
 class SettingsDialog(SettingsPanel):
@@ -202,6 +204,10 @@ class SettingsDialog(SettingsPanel):
             min=1, max=100000,
             initial=getConfig("keepAlive"),
         )
+      # White noise volume slider
+        label = _("Volume of white noise")
+        self.whiteNoiseVolumeSlider = sHelper.addLabeledControl(label, wx.Slider, minValue=0,maxValue=100)
+        self.whiteNoiseVolumeSlider.SetValue(getConfig("whiteNoiseVolume"))
 
     def isValid(self):
         try:
@@ -213,10 +219,10 @@ class SettingsDialog(SettingsPanel):
             return False
 
     def onSave(self):
-        global counterThreshold
         keepAlive = int(self.keepAliveEdit.Value)
         config.conf["bluetoothaudio"]["keepAlive"] = keepAlive
-        counterThreshold = keepAlive
+        config.conf["bluetoothaudio"]["whiteNoiseVolume"] = self.whiteNoiseVolumeSlider.Value
+        resetCounter(reopen=True)
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     scriptCategory = _("BluetoothAudio")
