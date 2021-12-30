@@ -3,6 +3,8 @@ Bluetooth Audio is  an NVDA add-on that improves sound quality when working with
 
 Most bluetooth devices enter standby mode after a few seconds of inactivity. That means that when NVDA starts speaking again, the first split second of sound will be lost. Bluetooth Audio add-on prevents bluetooth devices from entering standby mode by constantly playing a silent sound, that is inaudible to a human ear.
 
+Bluetooth Audio can optionally play white noise sound instead of silence. This can be good for testing or to ascertain that Bluetooth Audio works as expected. However, same level of audio quality improvement can be achieved by playing silence.
+
 Warning: using Bluetooth Audio add-on might reduce battery life of your bluetooth device.
 ## Download
 * Current stable version (Python 3 only, requires NVDA 2019.3 or later): [BluetoothAudio](https://github.com/mltony/nvda-bluetooth-audio/releases/latest/download/bluetoothaudio.nvda-addon)
