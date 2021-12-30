@@ -242,14 +242,16 @@ beepThread.start()
 def cleanup():
     beepThread.terminate()
 
+#tones.initialize
 def interceptSpeech():
-    def makeInterceptFunc(targetFunc):
+    def makeInterceptFunc(targetFunc, hookFunc):
         def wrapperFunc(*args, **kwargs):
-            resetCounter()
+            hookFunc()
             return targetFunc(*args, **kwargs)
         return wrapperFunc
-    speech.speak = makeInterceptFunc(speech.speak)
-    speech.speech.speak = makeInterceptFunc(speech.speech.speak)
+    speech.speak = makeInterceptFunc(speech.speak, resetCounter)
+    speech.speech.speak = makeInterceptFunc(speech.speech.speak, resetCounter)
+    tones.initialize = makeInterceptFunc(tones.initialize, lambda: resetCounter(reopen=True))
 
 def initConfiguration():
     confspec = {
