@@ -8,19 +8,15 @@ import addonHandler
 import api
 import atexit
 import config
-import core
 from ctypes import create_string_buffer, byref
 import globalPluginHandler
 import gui
 from logHandler import log
 from NVDAHelper import generateBeep
 import nvwave
-import os
 import random
-from scriptHandler import script
 import speech
 import struct
-import sys
 from threading import Condition, Lock, Thread
 import time
 import tones
@@ -78,19 +74,10 @@ def generateBeepBuf(whiteNoiseVolume):
     packed = struct.pack(f"<{n}h", *unpacked)
     return packed
 
-def getSoundsPath():
-    globalPluginPath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-    #addonPath = os.path.split(globalPluginPath)[0]
-    addonPath = globalPluginPath
-    soundsPath = os.path.join(addonPath, "sounds")
-    return soundsPath
-
 def generateBeepBuf(whiteNoiseVolume):
-    # sox -n -b 16 --rate 44100 output.wav synth 10 pinknoise
-    fileName = os.path.join(
-        getSoundsPath(),
-        "white_noise_10s.wav"
-    )
+    #fileName = r"H:\drp\backup\white-noise\white5s.wav"
+    # sox -n -b 16 output.wav synth 10 pinknoise
+    fileName = r"H:\tmp\07\output.wav"
 
     f = wave.open(fileName,"r")
     if f is None: raise RuntimeError()
@@ -109,15 +96,6 @@ def generateBeepBuf(whiteNoiseVolume):
 
 
 
-ttBase = time.time()
-def tt(t=None):
-    if t is not None:
-        t = time.time()
-    t -= ttBase
-    return "%.3f" % t
-    
-
-
 class BeepThread(Thread):
     def __init__(self):
         super().__init__(
@@ -131,10 +109,8 @@ class BeepThread(Thread):
         self.initRequested = True
         self.shutdownRequested = False
         self.player = None
-        self.timer = wx.PyTimer(self.lockAndInterrupt)
-        self.preCounter = 0
-        self.postCounter = 0
-
+        self.timer = wx.PyTimer(self.interrupt)
+        
 
     def doInit(self):
         mylog(".doInit")
@@ -150,9 +126,6 @@ class BeepThread(Thread):
         mylog(".run start")
         while True:
             with self.lock:
-                self.preCounter += 1
-                mylog(f"self.preCounter={self.preCounter}")
-                mylog(f"now={tt(time.time())} pauseTime={tt(self.pauseTime)}")
                 if self.shutdownRequested:
                     mylog("shutdown requested, quitting!")
                     return
@@ -161,43 +134,25 @@ class BeepThread(Thread):
                     self.doInit()
                     self.initRequested = False
                 if time.time() >= self.pauseTime:
-                    mylog("Pause Time reached, pausing; self.playing: {self.playing}>False")
+                    mylog("Pause Time reached, pausing")
                     self.playing = False
                     self.sleepCondition.wait()
                 else:
-                    mylog("self.playing: {self.playing} > True")
+                    mylog("Playing!")
                     self.playing = True
-                self.postCounter += 1
-                mylog(f"self.postCounter={self.postCounter}")
             if self.playing:
                 mylog("Feeding")
                 self.player.feed(self.buf)
             mylog("while True")
-            
-    def lockAndInterrupt(self):
-        mylog(".lockAndInterrupt")
-        with self.lock:
-            self.interrupt()
 
     def interrupt(self):
-        timeLeft = self.pauseTime - time.time()
-        mylog(f".interrupt self.playing={self.playing} timeLeft={timeLeft}")
-        mylog(f"now={tt(time.time())} pauseTime={tt(self.pauseTime)}")
-        # This function is not 100% reliable.
-        # For example, it might call player.stop() before the thread actually calls player.feed().
-        # In this case interrupt won't work. This can  be fixed but this would make code much more complicated.
-        # We rather decided to keep code simple. In the worst case white noise will be playing for extra 10 seconds.
-        if self.playing:
-            self.player.stop()
-            if self.preCounter == self.postCounter:
-                mylog(f"asdf pre == post {self.preCounter} == {self.postCounter}")
-                def postCheck():
-                    mylog(f"postCheck: {self.preCounter} {self.postCounter}")
-                core.callLater(1000, postCheck)
+        # implicit lock 
+        # with self.lock:
+            mylog(".interrupt")
+            if self.playing:
+                self.player.stop()
             else:
-                mylog(f"asdf pre != post {self.preCounter} != {self.postCounter}")
-        else:
-            self.sleepCondition.notifyAll()
+                self.sleepCondition.notifyAll()
 
     def play(self, untilWhen, reopen=False):
         mylog(".play")
@@ -205,19 +160,19 @@ class BeepThread(Thread):
             self.pauseTime = untilWhen
             self.initRequested = reopen
             self.timer.Stop()
-            timerDuration = int(1 + 1000 * (untilWhen - time.time()))
+            timerDuration = int(1000 * (untilWhen - time.time()))
             if timerDuration > 0:
                 mylog(f"setting timer for {timerDuration} seconds")
                 self.timer.Start(timerDuration, wx.TIMER_ONE_SHOT)
             if timerDuration <= 0 or not self.playing or reopen:
                 mylog("timerDuration <= 0")
                 self.interrupt()
-
+                
     def terminate(self):
         with self.lock:
             self.shutdownRequested = True
             self.interrupt()
-
+            
 
     def runOld(self):
         global player, counter, lock
@@ -311,8 +266,3 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def terminate(self):
         gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(SettingsDialog)
         cleanup()
-
-    @script(description=_("Debug log"), gestures=['kb:NVDA+Control+F12'])
-    def script_debugLog(self, gesture):
-        tones.beep(500, 50)
-        mylog("qqq")
