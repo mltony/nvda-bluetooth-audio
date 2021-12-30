@@ -158,7 +158,8 @@ class BeepThread(Thread):
     def play(self, untilWhen, reopen=False):
         with self.lock:
             self.pauseTime = untilWhen
-            self.initRequested = reopen
+            if reopen:
+                self.initRequested = True
             self.timer.Stop()
             timerDuration = int(1 + 1000 * (untilWhen - time.time()))
             if timerDuration > 0:
