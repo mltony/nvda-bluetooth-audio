@@ -89,7 +89,6 @@ def generateBeepBuf(whiteNoiseVolume):
     for i in range(n):
         unpacked[i] = int(unpacked[i] * whiteNoiseVolume/1000)
 
-    api.q = unpacked
     packed = struct.pack(f"<{n}h", *unpacked)
     return packed, f.getframerate()
 
