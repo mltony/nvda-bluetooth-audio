@@ -6,26 +6,41 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bluetoothaudio 1.0\n"
-"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
-"POT-Creation-Date: 2018-11-23 02:05+1000\n"
-"PO-Revision-Date: 2019-01-09 07:46+0800\n"
+"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
+"POT-Creation-Date: 2022-01-08 16:52+0800\n"
+"PO-Revision-Date: 2022-01-08 17:22+0800\n"
+"Last-Translator: dingpengyu <dingpengyu06@gmail.com>\n"
+"Language-Team: Cary-Rowen <manchen_0528@outlook.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: dingpengyu <dingpengyu06@gmail.com>\n"
-"Language-Team: NVDASimplified Chinese team All volunteers <Copyright (C) "
-"2010-2019>\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
+#. Translators: Title for the settings dialog
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on to be shown on installation and add-on information.
+#: addon\GlobalPlugins\bluetoothAudio.py:196
+#: addon\GlobalPlugins\bluetoothAudio.py:228 buildVars.py:17
 msgid "BluetoothAudio"
 msgstr "蓝牙音频"
 
+#. Translators: Label for Stand by time edit box
+#: addon\GlobalPlugins\bluetoothAudio.py:201
+msgid "Stand by time in seconds"
+msgstr "待机时间（以秒为单位）"
+
+#. White noise volume slider
+#: addon\GlobalPlugins\bluetoothAudio.py:208
+msgid "Volume of white noise"
+msgstr "白噪声音量"
+
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:20
 msgid ""
 "Bluetooth Audio is  an NVDA add-on that improves sound quality when working "
 "with bluetooth headphones or speakers."
-msgstr "蓝牙音频是一款NVDA插件，可在使用蓝牙耳机或扬声器时改善NVDA的音质。"
+msgstr ""
+"蓝牙音频是 NVDA 的插件，可在使用蓝牙耳机或蓝牙音箱时改进 NVDA 的语音效果。"
