@@ -185,7 +185,6 @@ def interceptSpeech():
             hookFunc()
             return targetFunc(*args, **kwargs)
         return wrapperFunc
-    speech.speak = makeInterceptFunc(speech.speak, resetCounter)
     speech.speech.speak = makeInterceptFunc(speech.speech.speak, resetCounter)
     tones.initialize = makeInterceptFunc(tones.initialize, lambda: resetCounter(reopen=True))
 
