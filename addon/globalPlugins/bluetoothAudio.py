@@ -162,7 +162,7 @@ class BeepThread(Thread):
             self.timer.Stop()
             timerDuration = int(1 + 1000 * (untilWhen - time.time()))
             if timerDuration > 0:
-                self.timer.Start(timerDuration, wx.TIMER_ONE_SHOT)
+                wx.CallAfter(self.timer.Start, timerDuration, wx.TIMER_ONE_SHOT)
             if timerDuration <= 0 or not self.playing or reopen:
                 mylog("timerDuration <= 0")
                 self.interrupt()
