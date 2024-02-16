@@ -22,19 +22,24 @@ msgstr ""
 #. Translators: Title for the settings dialog
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on to be shown on installation and add-on information.
+#: addon\GlobalPlugins\bluetoothAudio.py:196
+#: addon\GlobalPlugins\bluetoothAudio.py:228 buildVars.py:17
 msgid "BluetoothAudio"
 msgstr "BluetoothAudio"
 
 #. Translators: Label for Stand by time edit box
+#: addon\GlobalPlugins\bluetoothAudio.py:201
 msgid "Stand by time in seconds"
 msgstr "Время ожидания в секундах"
 
 #. White noise volume slider
+#: addon\GlobalPlugins\bluetoothAudio.py:208
 msgid "Volume of white noise"
 msgstr "Громкость белого шума"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:20
 msgid ""
 "Bluetooth Audio is  an NVDA add-on that improves sound quality when working "
 "with bluetooth headphones or speakers."
