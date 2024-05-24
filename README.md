@@ -1,3 +1,17 @@
+# Notice
+
+Bluetooth Audio add-on is abandoned. Silence playing functionality has been merged to NVDA core as of version 2024.2 and is turned on by default, so no further action is required.
+
+If you would like to hear white noise, you would need to set a hidden option:
+1. Open `NVDA.ini`. If you have installed copy of NVDA, it is located at `%APPDATA%\NVDA\nvda.ini`.
+2. Quit NVDA and open Narrator.
+3. Find `[audio]` section.
+4. Within that section, add the following line:
+    ```
+    whiteNoiseVolume = 50
+    ```
+5. Save and close the file. Restart NVDA.
+
 # nvda-bluetooth-audio
 Bluetooth Audio is  an NVDA add-on that improves sound quality when working with bluetooth or RF headphones or speakers.
 
