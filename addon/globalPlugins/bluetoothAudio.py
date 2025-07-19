@@ -73,10 +73,12 @@ def getSoundsPath():
     return soundsPath
 
 def generateBeepBuf(whiteNoiseVolume):
-    # sox -n -b 16 --rate 44100 output.wav synth 10 pinknoise
     fileName = os.path.join(
         getSoundsPath(),
-        "white_noise_10s.wav"
+        # sox -n -b 16 --rate 44100 output.wav synth 10 pinknoise
+        #"white_noise_10s.wav"
+        # sox -n -b 16 --rate 44100 output.wav synth 10 sine 22000
+        "high_freq_sine.wav"
     )
 
     f = wave.open(fileName,"r")
@@ -120,7 +122,15 @@ class BeepThread(Thread):
             except:
                 pass
         self.buf, framerate = generateBeepBuf(getConfig('whiteNoiseVolume'))
-        self.player = nvwave.WavePlayer(channels=2, samplesPerSec=framerate, bitsPerSample=16, outputDevice=config.conf["speech"]["outputDevice"],wantDucking=False)
+        outputDevice=config.conf["audio"]["outputDevice"]
+        self.player = nvwave.WavePlayer(
+            channels=2,
+            samplesPerSec=framerate,
+            bitsPerSample=16,
+            outputDevice=outputDevice,
+            wantDucking=False,
+            purpose=nvwave.AudioPurpose.SOUNDS,
+        )
 
     def run(self):
         while True:
