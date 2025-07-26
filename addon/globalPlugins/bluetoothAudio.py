@@ -78,12 +78,19 @@ def generateBeepBuf(whiteNoiseVolume):
         # sox -n -b 16 --rate 44100 output.wav synth 10 pinknoise
         #"white_noise_10s.wav"
         # sox -n -b 16 --rate 44100 output.wav synth 10 sine 22000
-        "high_freq_sine.wav"
+        #"high_freq_sine.wav"
+        # sox -n -b 16 --rate 44100 output.wav synth 10 sine 22000 fade t 0.01 10 0.01
+        #"high_freq_sine_fade.wav"
+        # sox -n -b 16 --rate 44100 high_freq_sine_wave_fade2.wav synth 2 sine 22000 fade t 0.1 2 0.1
+        # "high_freq_sine_wave_fade2.wav"
+        # sox -n -b 16 --rate 44100 20khz_sine_wave_fade_10sec.wav synth 10 sine 20000 fade t 0.1 10 0.1
+        "20khz_sine_wave_fade_10sec.wav"
     )
 
     f = wave.open(fileName,"r")
     if f is None: raise RuntimeError()
     buf =  f.readframes(f.getnframes())
+    return buf, f.getframerate()
     bufSize = len(buf)
     n = bufSize//2
     unpacked = struct.unpack(f"<{n}h", buf)
@@ -122,10 +129,19 @@ class BeepThread(Thread):
             except:
                 pass
         self.buf, framerate = generateBeepBuf(getConfig('whiteNoiseVolume'))
+        if False:
+            from NVDAHelper import generateBeep
+            length = 1000
+            left = right = getConfig('whiteNoiseVolume')
+            hz = 10
+            bufSize = generateBeep(None, hz, length, left, right)
+            self.buf = create_string_buffer(bufSize)
+            generateBeep(self.buf, hz, length, left, right)
+        
         outputDevice=config.conf["audio"]["outputDevice"]
         self.player = nvwave.WavePlayer(
-            channels=2,
-            samplesPerSec=framerate,
+            channels=1,
+            samplesPerSec=int(tones.SAMPLE_RATE),
             bitsPerSample=16,
             outputDevice=outputDevice,
             wantDucking=False,
