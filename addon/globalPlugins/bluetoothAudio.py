@@ -90,7 +90,7 @@ def generateBeepBuf(whiteNoiseVolume):
     f = wave.open(fileName,"r")
     if f is None: raise RuntimeError()
     buf =  f.readframes(f.getnframes())
-    return buf, f.getframerate()
+    #return buf, f.getframerate()
     bufSize = len(buf)
     n = bufSize//2
     unpacked = struct.unpack(f"<{n}h", buf)
